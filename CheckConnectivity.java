@@ -17,7 +17,7 @@ public class CheckConnectivity
     {
         Socket proxySocket = new Socket(proxy.getHost(), proxy.getPort());
         String connectRequest = String.format("CONNECT %s:%d HTTP/1.0\r\n", target.getHost(), target.getPort()) +
-                "Host: burpcollaborator.net\r\n" +
+                "Host: " + target.getHost() + "\r\n" +
                 "\r\n";
         proxySocket.getOutputStream().write(connectRequest.getBytes());
         readUntil(proxySocket.getInputStream(), "\r\n\r\n");
@@ -52,7 +52,7 @@ public class CheckConnectivity
     public static void main(String[] args) throws Exception
     {
         URL proxy = new URL(args[0]);
-        SSLSocket sslSocket = connect(proxy, new URL("https://burpcollaborator.net:443"));
+        SSLSocket sslSocket = connect(proxy, new URL("https://polling.burpcollaborator.net:443"));
         SSLSession sslSession = sslSocket.getSession();
         X509Certificate cert = (X509Certificate) sslSession.getPeerCertificates()[0];
         String certDN = cert.getSubjectDN().getName();
